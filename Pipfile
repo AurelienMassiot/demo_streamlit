@@ -9,6 +9,8 @@ verify_ssl = true
 pandas = "*"
 streamlit = "==0.48.1"
 plotly-express = "==0.4.1"
+shap = "*"
+scikit-learn = "*"
 
 [requires]
 python_version = "3.7"
