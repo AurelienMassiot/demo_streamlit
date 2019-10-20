@@ -12,13 +12,10 @@ Then, activate the Pipenv Shell:
 pipenv shell
 ```
 
-## 2 - Download data
-The dataset used is __Bike Sharing Demand__. It can be downloaded on [Kaggle](https://www.kaggle.com/c/bike-sharing-demand).  
-Then, put the dataset in `data/` and rename it `bike_sharing_demand_train.csv.
-
-
-## 3 - Launch the demo
+## 2 - Launch the demo
 Use the following command to launch Streamlit dashboard on __localhost:8501__: 
 ```bash
 streamlit run src/dashboard.py
 ```
+
+Note: The dataset used is the train set from  __Bike Sharing Demand__'s **train.csv**. It was downloaded from [Kaggle](https://www.kaggle.com/c/bike-sharing-demand).  
