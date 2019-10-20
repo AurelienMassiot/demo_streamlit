@@ -18,4 +18,16 @@ Use the following command to launch Streamlit dashboard on __localhost:8501__:
 streamlit run src/dashboard.py
 ```
 
-Note: The dataset used is the train set from  __Bike Sharing Demand__'s **train.csv**. It was downloaded from [Kaggle](https://www.kaggle.com/c/bike-sharing-demand).  
+![Web-app demo](images/demo.gif)
+
+## Notes
+The dataset used is the train set from  __Bike Sharing Demand__'s **train.csv**. It was downloaded from [Kaggle](https://www.kaggle.com/c/bike-sharing-demand).  
+
+The code can also be directly run from [Gist](https://gist.github.com/AurelienMassiot/b3070dab9e31dd119242648b4d27c9b4) remotely. For this you need to install Streamlit:
+```bash
+pip install streamlit
+```
+Then, launch Streamlit on the code shared on Gist:
+```bash
+streamlit run https://gist.githubusercontent.com/AurelienMassiot/b3070dab9e31dd119242648b4d27c9b4/raw/e35965ebe409d31fcfe59d5574e33641a2b43728/dashboard.py
+``` 
