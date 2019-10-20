@@ -1,4 +1,4 @@
-import datetime
+from datetime import timedelta
 from pathlib import Path
 from time import sleep
 
@@ -26,6 +26,7 @@ st.write(df_preprocessed)
 st.title('Data exploration')
 # %% barplots
 st.subheader('Barplots')
+
 mean_counts_by_hour = pd.DataFrame(df_preprocessed.groupby(['hour', 'season'], sort=True)['count'].mean()).reset_index()
 fig1 = px.bar(mean_counts_by_hour, x='hour', y='count', color='season', height=400)
 barplot_chart = st.write(fig1)
@@ -56,20 +57,10 @@ model_rf = RandomForestRegressor(max_depth=2, n_estimators=10)
 model_rf.fit(X, y)
 
 
-# %% Shap
-# explainer = shap.TreeExplainer(model_rf)
-# shap_values = explainer.shap_values(X)
+# %% Online timeseries
 
-# shap_summary_chart = st.write(shap.summary_plot(shap_values, X))
-# st.write(shap.force_plot(explainer.expected_value, shap_values[0, :], X.iloc[0, :], matplotlib=True))
-# ne marche pas, même avec l'option matplotlib=True
-
-# %% Stream new data
-
-
-@st.cache
 def generate_new_row(df):
-    time_end_new_data = df['datetime'].max() + datetime.timedelta(hours=1)
+    time_end_new_data = df['datetime'].max() + timedelta(hours=1)
     random_number_temp = np.random.uniform(df['temp'].min(), df['temp'].max(),
                                            size=(1), )
     random_number_humidity = np.random.uniform(df['humidity'].min(), df['humidity'].max(),
@@ -86,7 +77,7 @@ def add_row(df, new_row_df):
 
 
 def generate_new_prediction(df, row, model):
-    time_end_new_data = df['datetime'].max() + datetime.timedelta(hours=1)
+    time_end_new_data = df['datetime'].max() + timedelta(hours=1)
     X_pred = row[['temp', 'humidity']]
     y_pred = model.predict(X_pred)
     new_df = pd.DataFrame({'datetime': [time_end_new_data],
@@ -95,18 +86,16 @@ def generate_new_prediction(df, row, model):
     return new_df
 
 
-def animate(df, column, the_plot):
+def animate(df, column, chart):
     fig = px.line(df, x='datetime', y=column, color='predicted')
-    the_plot.plotly_chart(fig)
+    chart.plotly_chart(fig)
 
 
-# %% new data
-column = 'count'
 n_rows_to_display = 50
 df_for_predictions = df_preprocessed.copy()
 df_for_predictions['predicted'] = False
-fig = px.line(df_for_predictions.tail(n_rows_to_display), x='datetime', y=column, color='predicted')
-the_plot = st.plotly_chart(fig)
+fig = px.line(df_for_predictions.tail(n_rows_to_display), x='datetime', y='count', color='predicted')
+online_ts_chart = st.plotly_chart(fig)
 new_row_info = st.empty()
 predicted_row_warning = st.empty()
 
@@ -124,7 +113,7 @@ if st.sidebar.checkbox('Stream and predict on new data'):
         # concatenate predicted row
         df_for_predictions = add_row(df_for_predictions, new_prediction)
         # animate
-        animate(df_for_predictions.tail(n_rows_to_display), column, the_plot)
+        animate(df_for_predictions.tail(n_rows_to_display), 'count', online_ts_chart)
         bar.progress(i * 10)
         # wait
         sleep(0.1)
