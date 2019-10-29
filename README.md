@@ -1,5 +1,5 @@
 # demo_streamlit
-This is a demo for Streamlit, for the article I'll publish soon :-).
+This is a demo for Streamlit, for my article on OCTO blog https://blog.octo.com/creer-une-web-app-interactive-en-10min-avec-streamlit/.
 
 ## 1 - Environment creation
 Environment is managed by Pipenv. By running the following command, dependencies from Pipfile will be installed:
